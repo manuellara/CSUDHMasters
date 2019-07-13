@@ -1,6 +1,7 @@
 import pandas as pd 
 import sqlite3
 
+
 #connects to DB, creates table, populates fields
 def initializeDB():
         #initializes database OR connects to it if it already exits 
@@ -9,7 +10,7 @@ def initializeDB():
         #creates cursor to navigate database 
         c = conn.cursor()
 
-        #try to create table 
+        #try to create table => close DB when done
         try:
                 #create fields in table & fields 
                 c.execute("""
@@ -52,7 +53,8 @@ def initializeDB():
                 conn.commit()
                 #closes database connection
                 conn.close()
-                return
+                
+        return
 
 #gets index of last row => returns index of last row
 def getIndexOfLastRow( df ):
@@ -89,10 +91,21 @@ def insertValuesIntoKeys( headers, df ):
 
         return headers
 
+#TODO: INSERT statement :: populate database  
+def insertValuesIntoDB( data ):
+        #iterate through dict
+        for i in data:
+                for x in i.values():
+                        print( i[x] )
+        
+
+
+
 ##################################################################################################################
 
 #connects to DB, creates table, and fields
 initializeDB() 
+
 
 #loads gun violence csv file
 df = pd.read_csv('gun-violence-data_01-2013_03-2018.csv')
@@ -101,6 +114,9 @@ df = pd.read_csv('gun-violence-data_01-2013_03-2018.csv')
 headers = getColumnHeaders( df )
 
 #returns populated dict 
-headersWithValues = insertValuesIntoKeys( headers, df )
+data = insertValuesIntoKeys( headers, df )
 
-print(headersWithValues) 
+
+insertValuesIntoDB( data )
+
+#print( dict ) 
