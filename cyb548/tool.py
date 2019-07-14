@@ -93,12 +93,10 @@ def insertValuesIntoKeys( headers, df ):
 
 #TODO: INSERT statement :: populate database  
 def insertValuesIntoDB( data ):
-        #iterate through dict
-        for i in data:
-                for x in i.values():
-                        print( i[x] )
-        
-
+        #iterate through dict => { (tuples), (tuples) }
+        for i in data.items():
+                print( i )
+                
 
 
 ##################################################################################################################
@@ -119,4 +117,4 @@ data = insertValuesIntoKeys( headers, df )
 
 insertValuesIntoDB( data )
 
-#print( dict ) 
+#print( data ) 
