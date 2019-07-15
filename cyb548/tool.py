@@ -1,9 +1,8 @@
 import pandas as pd 
 import sqlite3
 
-
 #returns CSV file we will use
-def retireveCSV():
+def retrieveCSV():
         #loads gun violence csv file
         df = pd.read_csv('gun-violence-data_01-2013_03-2018.csv')
         
@@ -54,7 +53,7 @@ def initializeDB( columnHeaders ):
 
                 print("[ ✔ ] Table has been created")
         except Exception as e:
-                print(e)
+                print("[ × ]", e)
         finally:
                 #closes database connection
                 conn.close()
@@ -69,12 +68,10 @@ def getIndexOfLastRow( df ):
         
         return indexOfLastRow
 
-
-
 ##################################################################################################################
 
 #gets CSV file we will use
-df = retireveCSV()
+df = retrieveCSV()
 
 #gets dict of column headers from CSV file
 columnHeaders = getColumnHeaders( df )
