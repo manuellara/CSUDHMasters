@@ -72,6 +72,7 @@ def initializeDB( columnHeaders ):
                 print("[ ✔ ] Database connection closed")
                 
         return dbName, tableName
+        
 
 #builds SQL insert stament => returns insert statement 
 def constructSQLInsertStatement( df , index , tableName ):
@@ -104,7 +105,7 @@ def populateDB( dbName , df , tableName ):
                 print(f"\n[ ✔ ] Connected to {dbName}")
                 print( "[ ✔ ] Inserting rows in progress..." )
 
-                for i in range( 0 , getIndexOfLastRow( df ) + 1 ):
+                for i in range( 0 , getIndexOfLastRow(df) + 1 ):
                         #calls insert statement function 
                         insertStatement = constructSQLInsertStatement( df , i , tableName )
                         
