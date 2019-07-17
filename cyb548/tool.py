@@ -1,5 +1,12 @@
 import pandas as pd 
 import sqlite3
+import os
+
+#gets index of last row => returns index of last row
+def getIndexOfLastRow( df ):
+        indexOfLastRow = df.tail(1).index.item()
+        
+        return indexOfLastRow
 
 #returns CSV file we will use
 def retrieveCSV():
@@ -13,20 +20,24 @@ def getColumnHeaders( df ):
         #gets column headers 
         columnHeaders = df.columns 
 
-        print("[ ✔ ] CSV coulmn headers saved")
+        print("\n[ ✔ ] CSV coulmn headers saved")
         
         return columnHeaders
 
 #builds SQL statemanet off column headers
 def constructSQLstatement( columnHeaders ):
-        templateSQL = "CREATE TABLE gunViolenceData ( ? )"
+        tableName = "gunViolenceData"
+        
+        templateSQL = "CREATE TABLE ! ( ? )"
         templateString = "field text"
         placeholder = ''
 
         placeholder = ', '.join( str( templateString.replace( "field" , i ) ) for i in columnHeaders )
-        templateSQL = templateSQL.replace( "?", placeholder )
 
-        return templateSQL
+        templateSQL = templateSQL.replace( "?", placeholder )
+        templateSQL = templateSQL.replace( "!", tableName )
+
+        return templateSQL, tableName
 
 #creates database, table, and fields 
 def initializeDB( columnHeaders ):
@@ -36,14 +47,14 @@ def initializeDB( columnHeaders ):
         #initializes database OR connects to it if it already exits 
         conn = sqlite3.connect( dbName )
 
-        print(f"[ ✔ ] Connected to {dbName}")
+        print(f"\n[ ✔ ] Connected to {dbName}")
 
         #creates cursor to navigate database 
         c = conn.cursor()
 
         #try to create table => close DB when done
         try:
-                sqlStatement = constructSQLstatement( columnHeaders )
+                sqlStatement, tableName = constructSQLstatement( columnHeaders )
 
                 #create fields in table & fields 
                 c.execute( sqlStatement ) 
@@ -51,7 +62,7 @@ def initializeDB( columnHeaders ):
                 #commits data to database 
                 conn.commit()
 
-                print("[ ✔ ] Table has been created")
+                print(f"[ ✔ ] Table '{tableName}' has been created")
         except Exception as e:
                 print("[ × ]", e)
         finally:
@@ -60,21 +71,90 @@ def initializeDB( columnHeaders ):
 
                 print("[ ✔ ] Database connection closed")
                 
-        return
-             
-#gets index of last row => returns index of last row
-def getIndexOfLastRow( df ):
-        indexOfLastRow = df.tail(1).index.item()
+        return dbName, tableName
+
+#builds SQL insert stament => returns insert statement 
+def constructSQLInsertStatement( df , index , tableName ):
+        tableName = tableName
+
+        templateSQL = "INSERT INTO ! VALUES ( ? )"
+        templateString = "field"
+        placeholder = ''
+
+        # TODO: correct " error - sqlite cannot distinguish ending quotes - find a way to filter 
+        placeholder = ', '.join( '"' + str( templateString.replace( "field" , str( x ) )) + '"' for x in df.iloc[index] )
+
+        templateSQL = templateSQL.replace( "?", placeholder )
+        templateSQL = templateSQL.replace( "!", tableName )
+
+        return templateSQL
+
+#takes db name and 
+def populateDB( dbName , df , tableName ):
+        try:
+                #initialize counter
+                x = 0
+
+                #initializes database OR connects to it if it already exits 
+                conn = sqlite3.connect( dbName )
+
+                #creates cursor to navigate database 
+                c = conn.cursor()
+
+                print(f"\n[ ✔ ] Connected to {dbName}")
+                print( "[ ✔ ] Inserting rows in progress..." )
+
+                for i in range( 0 , getIndexOfLastRow( df ) + 1 ):
+                        #calls insert statement function 
+                        insertStatement = constructSQLInsertStatement( df , i , tableName )
+                        
+                        #create fields in table & fields 
+                        c.execute( insertStatement ) 
+
+                        #increment counter
+                        x += 1
+                
+                #commits data to database 
+                conn.commit()
+
+                if x > 1:
+                        row = "rows"
+                else:
+                        row = "row"
+
+                print( f"[ ✔ ] Successfully inserted {x} {row} into the {tableName} table" )
+        except Exception as e:
+                print("[ × ]", e)
+                
+                # ! DELETE WHEN DONE TROUBLESHOOTING
+                print( insertStatement )
+
+                # ! DELETE WHEN DONE TROUBLESHOOTING
+                os.system('rm data.db')
+        finally:
+                #closes database connection
+                conn.close()
+
+                print("[ ✔ ] Database connection closed")
         
-        return indexOfLastRow
+        return
+
+
 
 ##################################################################################################################
 
-#gets CSV file we will use
+print("[ ! ] START: importing CSV into DB")
+
+#gets CSV file we will use => returns dataframe 
 df = retrieveCSV()
 
-#gets dict of column headers from CSV file
+#=> returns pandas column headers object
 columnHeaders = getColumnHeaders( df )
 
-#connects to DB, creates table & fields
-initializeDB( columnHeaders ) 
+#connects to DB, creates table & fields => returns DB name
+dbName, tableName = initializeDB( columnHeaders ) 
+
+#add CSV data to DB
+populateDB( dbName , df , tableName )
+
+print("\n[ ! ] END: CSV successfully imported into DB")
