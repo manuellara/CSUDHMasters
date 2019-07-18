@@ -1,6 +1,5 @@
 import pandas as pd 
 import sqlite3
-import os
 
 #gets index of last row => returns index of last row
 def getIndexOfLastRow( df ):
