@@ -1,2 +1,4 @@
 #https://www.kaggle.com/jameslko/gun-violence-data
 *.csv 
+*.zip
+*.db

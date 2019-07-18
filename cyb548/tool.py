@@ -8,6 +8,7 @@ def getIndexOfLastRow( df ):
         
         return indexOfLastRow
 
+
 #returns CSV file we will use
 def retrieveCSV():
         #loads gun violence csv file
@@ -23,6 +24,7 @@ def getColumnHeaders( df ):
         print("\n[ ✔ ] CSV coulmn headers saved")
         
         return columnHeaders
+
 
 #builds SQL statemanet off column headers
 def constructSQLstatement( columnHeaders ):
@@ -72,7 +74,7 @@ def initializeDB( columnHeaders ):
                 print("[ ✔ ] Database connection closed")
                 
         return dbName, tableName
-        
+
 
 #builds SQL insert stament => returns insert statement 
 def constructSQLInsertStatement( df , index , tableName ):
@@ -82,8 +84,7 @@ def constructSQLInsertStatement( df , index , tableName ):
         templateString = "field"
         placeholder = ''
 
-        # TODO: correct " error - sqlite cannot distinguish ending quotes - find a way to filter 
-        placeholder = ', '.join( '"' + str( templateString.replace( "field" , str( x ) )) + '"' for x in df.iloc[index] )
+        placeholder = ', '.join( '"' + str( templateString.replace( "field" , str( x ) )  ).replace( '"', '`' ) + '"' for x in df.iloc[index] )
 
         templateSQL = templateSQL.replace( "?", placeholder )
         templateSQL = templateSQL.replace( "!", tableName )
@@ -126,12 +127,6 @@ def populateDB( dbName , df , tableName ):
                 print( f"[ ✔ ] Successfully inserted {x} {row} into the {tableName} table" )
         except Exception as e:
                 print("[ × ]", e)
-                
-                # ! DELETE WHEN DONE TROUBLESHOOTING
-                print( insertStatement )
-
-                # ! DELETE WHEN DONE TROUBLESHOOTING
-                os.system('rm data.db')
         finally:
                 #closes database connection
                 conn.close()
