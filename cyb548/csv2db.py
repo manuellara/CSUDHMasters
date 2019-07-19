@@ -14,7 +14,7 @@ def retrieveCSV():
         
         return df
 
-#gets column headers => returns headers dict 
+#gets column headers => returns headers as pandas object 
 def getColumnHeaders( df ):
         #gets column headers 
         columnHeaders = df.columns 
