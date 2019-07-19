@@ -7,8 +7,7 @@ def getIndexOfLastRow( df ):
         
         return indexOfLastRow
 
-
-#returns CSV file we will use
+#returns dataframe object from CSV
 def retrieveCSV():
         #loads gun violence csv file
         df = pd.read_csv('gun-violence-data_01-2013_03-2018.csv')
@@ -23,7 +22,6 @@ def getColumnHeaders( df ):
         print("\n[ ✔ ] CSV coulmn headers saved")
         
         return columnHeaders
-
 
 #builds SQL statemanet off column headers
 def constructSQLstatement( columnHeaders ):
@@ -73,7 +71,6 @@ def initializeDB( columnHeaders ):
                 print("[ ✔ ] Database connection closed")
                 
         return dbName, tableName
-
 
 #builds SQL insert stament => returns insert statement 
 def constructSQLInsertStatement( df , index , tableName ):
