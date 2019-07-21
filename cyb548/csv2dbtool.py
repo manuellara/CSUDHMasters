@@ -10,10 +10,11 @@ class csv2db:
     def getDataFrame(self):
         try:
             self.df = pd.read_csv(self.csv)
-        except Exception as e:
-            print("[ × ] Failed getting data frame: ", e)
-        finally:
             print("[ ✔ ] CSV converted to dataframe")
+        except Exception as e:
+            print("[ × ] Failed getting data frame: ", e) 
+        else:
+            return True           
 
     def getHeaders(self):
         try:
@@ -93,4 +94,4 @@ csv = 'gun-violence-data_01-2013_03-2018.csv'
 data = csv2db(databaseName, csv)
 data.execute()
 
-os.system('rm data.db')
+#os.system('rm data.db')

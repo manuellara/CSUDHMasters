@@ -1,3 +1,6 @@
 #https://www.kaggle.com/jameslko/gun-violence-data
 *.csv 
 *.db
+
+.pytest_cache/
+__pycache__/
