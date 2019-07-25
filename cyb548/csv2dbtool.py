@@ -88,10 +88,11 @@ class csv2db:
         self.getIndexOfLastRow()
         self.populateDB()
 
+
 databaseName = 'data.db'
 csv = 'gun-violence-data_01-2013_03-2018.csv'
 
 data = csv2db(databaseName, csv)
 data.execute()
 
-#os.system('rm data.db')
+os.system('rm data.db')
