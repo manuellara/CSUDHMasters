@@ -13,8 +13,7 @@ class csv2db:
             print("[ ✔ ] CSV converted to dataframe")
         except Exception as e:
             print("[ × ] Failed getting data frame: ", e) 
-        else:
-            return True           
+          
 
     def getHeaders(self):
         try:
@@ -52,6 +51,7 @@ class csv2db:
             print(f"[ × ] Failed inserting headers into {self.tableName}: ", e)
         else:
             self.c.execute(self.templateSQL)
+            self.conn.commit()
             print(f"[ ✔ ] Headers inserted into the {self.tableName} table")
 
     def getIndexOfLastRow(self):
@@ -76,6 +76,7 @@ class csv2db:
         except Exception as e:
             print("[ × ] Failed populating database: ", e)
         else:
+            self.conn.commit()
             self.conn.close()
             print("[ ✔ ] Database connection closed")
 
@@ -95,4 +96,4 @@ csv = 'gun-violence-data_01-2013_03-2018.csv'
 data = csv2db(databaseName, csv)
 data.execute()
 
-os.system('rm data.db')
+#os.system('rm data.db')
