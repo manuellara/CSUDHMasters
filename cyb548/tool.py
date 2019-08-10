@@ -157,5 +157,4 @@ creds = "creds.json"
 sheetName = "projectMgmt"
 driver = db2sheets( creds , dbName , tableName , sheetName )
 driver.execute()
-
 print(f"\n[ ✔ ] Done.")
