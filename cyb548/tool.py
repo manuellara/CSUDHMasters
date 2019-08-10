@@ -54,7 +54,7 @@ class csv2db:
             print(f"[ ✔ ] Headers inserted into the {self.tableName} table")
 
     def getIndexOfLastRow(self):
-        self.indexOfLastRow = self.df.tail(1).index.item()
+        self.indexOfLastRow = self.df.index[-1]
 
     def populateDB(self):
         print("[ ✔ ] Inserting rows in progress...")
