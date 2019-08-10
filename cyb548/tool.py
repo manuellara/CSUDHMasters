@@ -128,7 +128,7 @@ class db2sheets:
             self.c.execute( self.sql )
             self.result = self.c.fetchall()
             print(f"[ ✔ ] Populating {self.sheetName}...")
-            for row in (self.result):
+            for row in self.result:
                 self.sheet.append_row( [ i for i in row ] )
                 self.x += 1
                 if self.x == 50:
@@ -138,7 +138,6 @@ class db2sheets:
             print(f"[ × ] Failed populating Sheet: ", e)
         else:
             print(f"[ ✔ ] {self.x} rows inserted into {self.sheetName}")
-            print(f"[ ✔ ] Done.")
 
     def execute(self):
         self.connectToDB()
@@ -158,3 +157,5 @@ creds = "creds.json"
 sheetName = "projectMgmt"
 driver = db2sheets( creds , dbName , tableName , sheetName )
 driver.execute()
+
+print(f"\n[ ✔ ] Done.")
