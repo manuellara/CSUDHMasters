@@ -4,7 +4,7 @@ This script takes a .csv dataset from Kaggle, parses it, and inserts it into an 
 
 # CYB551 - data vizualization using Prettytable & Matplotlib
 
-This script takes a .pcap file and breaks it down by packet using Scapy to reveal source IPs, destination IPs, protocols, souce ports, and destination ports. From there, a Pandas dataframe is contructed from the details and a dictionary is constructed.
+This script takes a .pcap file and breaks it down by packet using Scapy to reveal source IPs, destination IPs, protocols, souce ports, and destination ports. From there, a Pandas dataframe is constructed from the details and a dictionary is created.
 
 The Prettytable library uses the aforementioned dictionary to create a table listing the most common source IPs.
 
