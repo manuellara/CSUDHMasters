@@ -2,7 +2,7 @@
 
 This script takes a .csv dataset from Kaggle, parses it, and inserts it into an SQLite database with some help from the Pandas library. From there, a connection to Google Sheets is made using the gspread and oauth2 libraries. Finally, the data is read from the database and written to Google Sheets.
 
-# CYB551 - data vizualization using matplotlib
+# CYB551 - data vizualization using Prettytable & Matplotlib
 
 This script takes a .pcap file and breaks it down by packet using Scapy to reveal source IPs, destination IPs, protocols, souce ports, and destination ports. From there, a Pandas dataframe is contructed from the details and a dictionary is constructed.
 
